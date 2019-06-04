@@ -9,3 +9,27 @@ var connection = mysql.createConnection({
 
 connection.connect(() => {console.log('CONNECTED TO db')});
 
+var getTodos= (callback) => {
+    var query = 'SELECT todo FROM todos';
+    connection.query(query, (err, data) => {
+        if(err){
+            callback(err, null);
+            return;
+        }
+        callback(null, data);
+    })
+}
+
+var storeToDo = (todo, callback) => {
+    var query = `INSERT INTO todos(todo) VALUES ('${todo}')`;
+    connection.query(query, (err, data) => {
+        if(err){
+            callback(err, null);
+            return;
+        }
+        callback(null, data);
+    })
+}
+
+exports.getTodos = getTodos;
+exports.storeToDo = storeToDo;
