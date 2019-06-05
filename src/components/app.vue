@@ -9,7 +9,9 @@
           <input type = 'submit' value = 'Add task' v-on:click = 'addToDo'> 
         </div>
         <div v-for = 'todo in todos'>
-           <div> {{todo['todo']}} </div>
+           <div class = 'todoEntry'> 
+             {{todo['todo']}} 
+           </div>
         </div>
     </div>    
   </div>
@@ -33,8 +35,16 @@ export default{
   },
   methods : {
     addToDo(){
-        var task = {task : this.tasks};
-        this.todos.push(task);
+        axios.post('/todos', 
+        {
+          todo: this.tasks
+        })
+        .then(() => {
+          this.getTasks();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
         this.tasks = '';
     },
     getTasks(){
@@ -46,7 +56,7 @@ export default{
       .catch((err) => {
         console.log(err);
       })
-    }
+    }, 
   }
 }
 </script>
@@ -64,5 +74,13 @@ export default{
 .title{
     font-size: 30px;
     color: white;
+}
+
+.todoEntry{
+  background-color: white; 
+  display: flex; 
+  flex-direction: row;
+  width: 200px;
+  border: 1px solid black;
 }
 </style>
