@@ -9,7 +9,7 @@
           <input type = 'submit' value = 'Add task' v-on:click = 'addToDo'> 
         </div>
         <div v-for = 'todo in todos'>
-           <div> {{todo.task}} </div>
+           <div> {{todo['todo']}} </div>
         </div>
     </div>    
   </div>
@@ -17,6 +17,8 @@
 
 
 <script>
+import axios from 'axios';
+
 export default{
   data(){
     return {   
@@ -26,11 +28,24 @@ export default{
       ]
     }  
   },
+  mounted(){
+    this.getTasks();
+  },
   methods : {
     addToDo(){
         var task = {task : this.tasks};
         this.todos.push(task);
         this.tasks = '';
+    },
+    getTasks(){
+      axios.get('/todos')
+      .then((data) => {
+        console.log(data.data);
+        this.todos = data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }
   }
 }
