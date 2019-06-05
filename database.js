@@ -31,5 +31,17 @@ var storeToDo = (todo, callback) => {
     })
 }
 
+var deleteTask = (todo, callback) => {
+    var query  = `DELETE from todos WHERE todo = '${todo}'`;
+    connection.query(query, (err, data) => {
+        if(err){
+            callback(err, null);
+            return;
+        }
+        callback(null, data);
+    })
+}
+
 exports.getTodos = getTodos;
 exports.storeToDo = storeToDo;
+exports.deleteTask = deleteTask;

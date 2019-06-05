@@ -1,5 +1,6 @@
 var getToDos = require('./database.js').getTodos;
 var storeToDo = require('./database.js').storeToDo;
+var deleteTask = require('./database.js').deleteTask;
 
 var getAll = (req, res) => {
    getToDos((err, data) => {
@@ -12,7 +13,6 @@ var getAll = (req, res) => {
 }
 
 var storeOne = (req, res) => {
-    console.log(req.body);
     storeToDo(req.body.todo, (err, data) => {
         if(err){
             res.status(404).send(err);
@@ -22,5 +22,17 @@ var storeOne = (req, res) => {
     })
 }
 
+var deleteOne = (req, res) => {
+    deleteTask(req.body.todo, (err, data) => {
+        if(err){
+            res.status(404).send(err);
+            return;
+        }
+        res.status(201).send(data);
+    })
+
+}
+
 exports.getAll = getAll; 
 exports.storeOne = storeOne;
+exports.deleteOne = deleteOne;

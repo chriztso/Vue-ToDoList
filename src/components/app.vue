@@ -8,9 +8,11 @@
           <input type = 'text' v-model= 'tasks'>
           <input type = 'submit' value = 'Add task' v-on:click = 'addToDo'> 
         </div>
-        <div v-for = 'todo in todos'>
+        <div v-for = 'todo, index in todos'>
            <div class = 'todoEntry'> 
-             {{todo['todo']}} 
+             {{todo['todo']}}
+             <button>Edit</button>
+             <button v-on:click = 'deleteTask(todo["todo"])'>Delete</button>
            </div>
         </div>
     </div>    
@@ -56,7 +58,15 @@ export default{
       .catch((err) => {
         console.log(err);
       })
-    }, 
+    },
+    deleteTask(task){
+      axios.delete('/todo', 
+      {
+        data:  {todo : task}
+      })
+      .then(() => {this.getTasks()})
+      .catch((err) => {console.log(err)})
+    } 
   }
 }
 </script>
@@ -80,7 +90,8 @@ export default{
   background-color: white; 
   display: flex; 
   flex-direction: row;
-  width: 200px;
+  width: 300px;
   border: 1px solid black;
+  justify-content: space-evenly;
 }
 </style>
