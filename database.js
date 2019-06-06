@@ -42,6 +42,18 @@ var deleteTask = (todo, callback) => {
     })
 }
 
+var editTask = (todo, newTodo, callback) => {
+    var query = `UPDATE todos SET todo = '${newTodo}' WHERE todo = '${todo}'`;
+    connection.query(query, (err, data) => {
+        if(err){
+            callback(err, null);
+            return;
+        }
+        callback(null, data);
+    })
+}
+
 exports.getTodos = getTodos;
 exports.storeToDo = storeToDo;
 exports.deleteTask = deleteTask;
+exports.editTask = editTask;

@@ -10,8 +10,14 @@
         </div>
         <div v-for = 'todo, index in todos'>
            <div class = 'todoEntry'> 
-             {{todo['todo']}}
-             <button>Edit</button>
+             <div v-if = 'edit && index === indexOne'>
+              <input type = 'text' v-model = 'editText'>
+              <button v-on:click = 'submitEdit(todo["todo"])'>Done</button>
+             </div>
+             <div v-else>
+               {{todo['todo']}}
+               <button v-on:click = 'editTask(todo["todo"], index)'>Edit</button>
+             </div>
              <button v-on:click = 'deleteTask(todo["todo"])'>Delete</button>
            </div>
         </div>
@@ -29,7 +35,11 @@ export default{
       tasks : '',  
       todos : [   
           
-      ]
+      ],
+      edit : false, 
+      oldText : '',
+      editText : '', 
+      indexOne : '', 
     }  
   },
   mounted(){
@@ -60,11 +70,24 @@ export default{
       })
     },
     deleteTask(task){
-      axios.delete('/todo', 
+      axios.delete('/deleteTodo', 
       {
         data:  {todo : task}
       })
       .then(() => {this.getTasks()})
+      .catch((err) => {console.log(err)})
+    },
+    editTask(text, index){
+      this.edit = !this.edit;
+      this.oldText =  text;
+      this.indexOne = index;
+    },
+    submitEdit(){
+      axios.put('/updateTodo', 
+      {
+        data : {todo: this.oldText, newTodo : this.editText}
+      })
+      .then(() => {this.getTasks(); this.edit = !this.edit})
       .catch((err) => {console.log(err)})
     } 
   }

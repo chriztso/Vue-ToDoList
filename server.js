@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 
 app.get('/todos', controllers.getAll);
 app.post('/todos', controllers.storeOne);
-app.delete('/todo', controllers.deleteOne)
+app.put('/updateTodo', controllers.editOne);
+app.delete('/deleteTodo', controllers.deleteOne);
 
 
 
