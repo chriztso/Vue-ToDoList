@@ -47,17 +47,17 @@ export default{
   },
   methods : {
     addToDo(){
-        axios.post('/todos', 
-        {
-          todo: this.tasks
-        })
-        .then(() => {
-          this.getTasks();
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        this.tasks = '';
+      axios.post('/todos', 
+      {
+        todo: this.tasks
+      })
+      .then(() => {
+        this.getTasks();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      this.tasks = '';
     },
     getTasks(){
       axios.get('/todos')
